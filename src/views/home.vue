@@ -2,7 +2,7 @@
     <div class="all">
         <div class="right">
             <div class="top">
-                <el-amap class="amap-box" :vid="'amap-vue'">
+                <el-amap class="amap-box" :vid="'amap-vue'" :center="[117.14093, 39.061554]" :zooms="[15,18]">
                     <el-amap-marker v-for="(u, index) in markers" :position="u.position" :label="u.label"
                         :key="index"></el-amap-marker>
                 </el-amap>
@@ -14,7 +14,7 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
                 <div class="trash2">
                     <div class="num">2号垃圾桶</div>
@@ -22,7 +22,7 @@
                         <img src="../img/垃圾桶 (2).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:差</div>
+                    <div class="status">状态:烟雾警报</div>
                 </div>
                 <div class="trash3">
                     <div class="num">3号垃圾桶</div>
@@ -30,15 +30,15 @@
                         <img src="../img/垃圾桶 (3).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:良好</div>
+                    <div class="status">状态:已满</div>
                 </div>
-                <div class="trash2">
+                <div class="trash3">
                     <div class="num">4号垃圾桶</div>
                     <div class="img">
-                        <img src="../img/垃圾桶 (2).png"
+                        <img src="../img/垃圾桶 (3).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:差</div>
+                    <div class="status">状态:已满</div>
                 </div>
                 <div class="trash1">
                     <div class="num">5号垃圾桶</div>
@@ -46,15 +46,15 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
-                <div class="trash2">
+                <div class="trash1">
                     <div class="num">6号垃圾桶</div>
                     <div class="img">
-                        <img src="../img/垃圾桶 (2).png"
+                        <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:差</div>
+                    <div class="status">状态:未满</div>
                 </div>
                 <div class="trash3">
                     <div class="num">7号垃圾桶</div>
@@ -62,7 +62,7 @@
                         <img src="../img/垃圾桶 (3).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:良好</div>
+                    <div class="status">状态:已满</div>
                 </div>
                 <div class="trash1">
                     <div class="num">8号垃圾桶</div>
@@ -70,7 +70,7 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
                 <div class="trash3">
                     <div class="num">9号垃圾桶</div>
@@ -78,7 +78,7 @@
                         <img src="../img/垃圾桶 (3).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:良好</div>
+                    <div class="status">状态:已满</div>
                 </div>
                 <div class="trash1">
                     <div class="num">10号垃圾桶</div>
@@ -86,7 +86,7 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
                 <div class="trash3">
                     <div class="num">11号垃圾桶</div>
@@ -94,7 +94,7 @@
                         <img src="../img/垃圾桶 (3).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:良好</div>
+                    <div class="status">状态:已满</div>
                 </div>
                 <div class="trash1">
                     <div class="num">12号垃圾桶</div>
@@ -102,7 +102,7 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
                 <div class="trash1">
                     <div class="num">13号垃圾桶</div>
@@ -110,7 +110,7 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
                 <div class="trash1">
                     <div class="num">14号垃圾桶</div>
@@ -118,7 +118,7 @@
                         <img src="../img/垃圾桶 (1).png"
                             style="width:5vw;height:11vh;margin-left: 2.9vw;margin-top: 1vh;min-height: 80px;min-width: 80px;">
                     </div>
-                    <div class="status">状态:优</div>
+                    <div class="status">状态:未满</div>
                 </div>
             </div>
         </div>

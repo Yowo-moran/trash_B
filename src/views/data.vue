@@ -1,7 +1,12 @@
 <template>
   <div class="right">
     <div class="top">
-      <el-select v-model="value" placeholder="请选择" style="height: 85%">
+      <el-select
+        v-model="area"
+        placeholder="请选择"
+        style="height: 85%"
+        @change="selectArea"
+      >
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -16,6 +21,7 @@
         plain
         icon="el-icon-refresh-right"
         style="height: 85%"
+        @click="refresh"
         >刷新</el-button
       >
     </div>
@@ -46,27 +52,11 @@ export default {
     return {
       options: [
         {
-          value: "选项1",
-          label: "西青区",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
+          value: "天津理工大学",
+          label: "天津理工大学",
         },
       ],
-      value: "",
+      area: "天津理工大学",
       allTrash: {
         title: {
           text: "垃圾桶详细",
@@ -74,67 +64,81 @@ export default {
         legend: {},
         tooltip: {},
         dataset: {
-          dimensions: ["product", "可回收", "不可回收", "厨余垃圾"],
+          dimensions: ["product", "其他垃圾", "可回收", "厨余垃圾", "有害垃圾"],
           source: [
             {
               product: "1号垃圾桶",
               可回收: 43.3,
-              不可回收: 85.8,
+              有害垃圾: 85.8,
               厨余垃圾: 93.7,
+              其他垃圾: 40,
             },
             {
               product: "2号垃圾桶",
               可回收: 83.1,
-              不可回收: 73.4,
+              有害垃圾: 73.4,
               厨余垃圾: 55.1,
+              其他垃圾: 40,
             },
             {
               product: "3号垃圾桶",
               可回收: 86.4,
-              不可回收: 65.2,
+              有害垃圾: 65.2,
               厨余垃圾: 82.5,
+              其他垃圾: 40,
             },
             {
               product: "4号垃圾桶",
               可回收: 72.4,
-              不可回收: 53.9,
+              有害垃圾: 53.9,
               厨余垃圾: 39.1,
+              其他垃圾: 40,
             },
             {
               product: "5号垃圾桶",
               可回收: 43.3,
-              不可回收: 85.8,
+              有害垃圾: 85.8,
               厨余垃圾: 93.7,
+              其他垃圾: 40,
             },
             {
               product: "6号垃圾桶",
               可回收: 83.1,
-              不可回收: 73.4,
+              有害垃圾: 73.4,
               厨余垃圾: 55.1,
+              其他垃圾: 40,
             },
             {
               product: "7号垃圾桶",
               可回收: 86.4,
-              不可回收: 65.2,
+              有害垃圾: 65.2,
               厨余垃圾: 82.5,
+              其他垃圾: 40,
             },
             {
               product: "8号垃圾桶",
               可回收: 72.4,
-              不可回收: 53.9,
+              有害垃圾: 53.9,
               厨余垃圾: 39.1,
+              其他垃圾: 40,
             },
             {
               product: "9号垃圾桶",
               可回收: 43.3,
-              不可回收: 85.8,
+              有害垃圾: 85.8,
               厨余垃圾: 93.7,
+              其他垃圾: 40,
             },
           ],
         },
         xAxis: { type: "category" },
         yAxis: {},
-        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+        series: [
+          { type: "bar" },
+          { type: "bar" },
+          { type: "bar" },
+          { type: "bar" },
+        ],
       },
       status: {
         title: {
@@ -220,10 +224,10 @@ export default {
             type: "pie",
             radius: "50%",
             data: [
-              { value: 1048, name: "可回收垃圾" },
-              { value: 735, name: "不可回收垃圾" },
-              { value: 580, name: "厨余垃圾" },
               { value: 484, name: "其他垃圾" },
+              { value: 1048, name: "可回收垃圾" },
+              { value: 580, name: "厨余垃圾" },
+              { value: 735, name: "有害垃圾" },
             ],
             emphasis: {
               itemStyle: {
@@ -236,6 +240,14 @@ export default {
         ],
       },
     };
+  },
+  methods: {
+    selectArea(e) {
+      console.log(e);
+    },
+    refresh() {
+      console.log("刷新");
+    },
   },
 };
 </script>

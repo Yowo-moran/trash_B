@@ -23,18 +23,22 @@
       </div>
       <div class="nav">
         <el-menu
-          default-active="1"
           class="el-menu-vertical-demo"
           background-color="#defdd5"
           text-color="#202124"
           active-text-color="#40974c"
           router
+          :default-active="routerPath"
         >
           <el-menu-item index="/manage/data">
             <i class="el-icon-notebook-1"></i>
             <span slot="title">数据统计</span>
           </el-menu-item>
-          <el-submenu>
+          <el-menu-item index="/manage/trash">
+            <i class="el-icon-delete"></i>
+            <span slot="title">垃圾桶管理</span>
+          </el-menu-item>
+          <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>区域选择</span>
@@ -44,21 +48,9 @@
                 <i class="el-icon-office-building"></i>
                 <span slot="title">天津理工大学</span>
               </el-menu-item>
-              <el-menu-item index="/manage/home">
-                <i class="el-icon-office-building"></i>
-                <span slot="title">天津师范大学</span>
-              </el-menu-item>
-              <el-menu-item index="/manage/home">
-                <i class="el-icon-office-building"></i>
-                <span slot="title">天津工业大学</span>
-              </el-menu-item>
-              <el-menu-item index="/manage/home">
-                <i class="el-icon-office-building"></i>
-                <span slot="title">天津市西青区</span>
-              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="/manage/list">
+          <el-menu-item index="/manage/prize">
             <i class="el-icon-shopping-cart-2"></i>
             <span slot="title">奖品统计</span>
           </el-menu-item>
@@ -80,7 +72,16 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      routerPath: "/manage/data",
+    };
+  },
+  mounted() {
+    this.routerPath = this.$route.path;
+  },
+};
 </script>
 
 <style lang="less" scoped>

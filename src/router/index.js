@@ -23,8 +23,12 @@ const routes = [
                 component: () => import('@/views/data.vue')
             },
             {
-                path: "/manage/list",
-                component: () => import('@/views/list.vue')
+                path: "/manage/prize",
+                component: () => import('@/views/prizeList.vue')
+            },
+            {
+                path: "/manage/trash",
+                component: () => import('@/views/trashList.vue')
             }
         ]
     }
