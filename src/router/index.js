@@ -12,6 +12,7 @@ const routes = [
     },
     {
         path: '/manage',
+        redirect: '/manage/data',
         component: () => import('@/views/manage.vue'),
         children: [
             {

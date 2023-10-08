@@ -1,7 +1,7 @@
 <template>
   <div class="allLogin">
     <div class="login">
-      <h1 class="title">登录</h1>
+      <h1 class="title">垃圾云管理</h1>
       <el-input
         class="inputword"
         v-model="loginForm.username"
@@ -14,13 +14,13 @@
         show-password
         @keyup.enter.native="loginUp(loginForm)"
       ></el-input>
-      <div>
-        <el-button type="primary" @click="loginUp(loginForm)">登录</el-button>
-        &nbsp;&nbsp;
-        <el-button el-button type="primary" plain @click="returnApply"
-          >返回</el-button
-        >
-      </div>
+
+      <el-button
+        type="primary"
+        @click="loginUp(loginForm)"
+        style="width: 50%; font-size: 16px; font-weight: 600"
+        >登&nbsp;&nbsp;录</el-button
+      >
     </div>
   </div>
 </template>
@@ -59,15 +59,10 @@ export default {
           localStorage.setItem("token", responses.data.data.token);
           setTimeout(() => {
             this.$router.replace({
-              name: "management",
+              name: "manage",
             });
           }, 700);
         }
-      });
-    },
-    returnApply() {
-      this.$router.replace({
-        name: "apply",
       });
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="trash">
     <div class="top">
-      <el-button type="success" plain @click="dialogVisible = true"
+      <el-button type="success" plain @click="addTrashDialog = true"
         >添加垃圾桶</el-button
       >
     </div>
@@ -17,34 +17,72 @@
       </el-table-column>
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+          <el-button size="mini" @click="trashEdit(scope.$index, scope.row)"
             >编辑</el-button
           >
           <el-button
             size="mini"
             type="danger"
-            @click="handleEdit(scope.$index, scope.row)"
+            @click="trashDetele(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
       </el-table-column>
     </el-table>
     <div class="top">
-      <el-pagination background layout="prev, pager, next" :total="1000">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="12"
+        :total="allPage"
+        @current-change="handleCurrentChange"
+      >
       </el-pagination>
     </div>
     <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
+      title="添加垃圾桶"
+      :visible.sync="addTrashDialog"
       width="30%"
-      :before-close="handleClose"
+      :before-close="trashAddClose"
     >
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
+      <div>
+        <el-form
+          ref="addTrash"
+          :model="addTrash"
+          label-width="120px"
+          label-position="left"
         >
+          <el-form-item label="垃圾桶地址" required>
+            <el-input v-model="addTrash.address"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addTrashDialog = false">取 消</el-button>
+        <el-button type="primary" @click="add">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="编辑垃圾桶"
+      :visible.sync="editTrashDialog"
+      width="30%"
+      :before-close="trashEditClose"
+    >
+      <div>
+        <el-form
+          ref="editTrash"
+          :model="editTransh"
+          label-width="120px"
+          label-position="left"
+        >
+          <el-form-item label="垃圾桶地址" required>
+            <el-input v-model="editTransh.address"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editTrashDialog = false">取 消</el-button>
+        <el-button type="primary" @click="edit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -104,16 +142,53 @@ export default {
           address: "天津理工大学一号体育场前",
         },
       ],
-      dialogVisible: false,
+      addTrash: {
+        address: "",
+      },
+      addTrashDialog: false,
+      editTransh: {
+        id: "",
+        address: "",
+      },
+      editTrashDialog: false,
+      currentPage: 1,
+      allPage: 100,
     };
   },
+  mounted() {
+    this.getTrashList();
+  },
   methods: {
-    handleEdit(row) {
-      console.log(row);
+    add() {
+      console.log("添加垃圾桶！");
+      this.addTrashDialog = false;
     },
-    handleClose() {
-      console.log("close");
-      this.dialogVisible = false;
+    trashAddClose() {
+      this.addTrash.address = "";
+      this.addTrashDialog = false;
+    },
+    edit() {
+      console.log("修改垃圾桶！");
+      this.editTrashDialog = false;
+    },
+    trashEdit(index) {
+      this.editTransh.id = index;
+      this.editTransh.address = this.tableData[index].address;
+      this.editTrashDialog = true;
+      console.log(index);
+    },
+    trashEditClose() {
+      this.editTrashDialog = false;
+    },
+    trashDetele(index) {
+      console.log("删除垃圾桶！", index);
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      console.log(`当前页: ${val}`);
+    },
+    getTrashList() {
+      console.log("获取！");
     },
   },
 };
