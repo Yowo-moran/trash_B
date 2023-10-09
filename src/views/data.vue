@@ -1,20 +1,16 @@
 <template>
   <div class="right">
     <div class="top">
-      <el-select
+      <el-cascader
         v-model="area"
-        placeholder="请选择"
-        style="height: 85%"
-        @change="selectArea"
-      >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+        :options="options"
+        @change="handleChange"
+        :props="{
+          value: 'id',
+          label: 'content',
+          children: 'geoPoList',
+        }"
+      ></el-cascader>
 
       <el-button
         type="success"
@@ -46,16 +42,12 @@
 
 <script>
 import Echarts from "@/components/Echarts.vue";
+import request from "@/api";
 export default {
   components: { Echarts },
   data() {
     return {
-      options: [
-        {
-          value: "天津理工大学",
-          label: "天津理工大学",
-        },
-      ],
+      options: [],
       area: "天津理工大学",
       allTrash: {
         title: {
@@ -68,66 +60,66 @@ export default {
           source: [
             {
               product: "1号垃圾桶",
-              可回收: 43.3,
-              有害垃圾: 85.8,
-              厨余垃圾: 93.7,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "2号垃圾桶",
-              可回收: 83.1,
-              有害垃圾: 73.4,
-              厨余垃圾: 55.1,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "3号垃圾桶",
-              可回收: 86.4,
-              有害垃圾: 65.2,
-              厨余垃圾: 82.5,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "4号垃圾桶",
-              可回收: 72.4,
-              有害垃圾: 53.9,
-              厨余垃圾: 39.1,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "5号垃圾桶",
-              可回收: 43.3,
-              有害垃圾: 85.8,
-              厨余垃圾: 93.7,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "6号垃圾桶",
-              可回收: 83.1,
-              有害垃圾: 73.4,
-              厨余垃圾: 55.1,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "7号垃圾桶",
-              可回收: 86.4,
-              有害垃圾: 65.2,
-              厨余垃圾: 82.5,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "8号垃圾桶",
-              可回收: 72.4,
-              有害垃圾: 53.9,
-              厨余垃圾: 39.1,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
             {
               product: "9号垃圾桶",
-              可回收: 43.3,
-              有害垃圾: 85.8,
-              厨余垃圾: 93.7,
-              其他垃圾: 40,
+              可回收: 0,
+              有害垃圾: 0,
+              厨余垃圾: 0,
+              其他垃圾: 0,
             },
           ],
         },
@@ -142,7 +134,7 @@ export default {
       },
       status: {
         title: {
-          text: "垃圾桶状态统计",
+          text: "状态统计",
         },
         tooltip: {
           trigger: "item",
@@ -177,8 +169,8 @@ export default {
               show: false,
             },
             data: [
-              { value: 484, name: "故障" },
-              { value: 300, name: "正常" },
+              { value: 0, name: "故障" },
+              { value: 0, name: "正常" },
             ],
           },
         ],
@@ -206,7 +198,7 @@ export default {
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130, 120, 200],
+            data: [],
             type: "line",
           },
         ],
@@ -223,12 +215,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: "50%",
-            data: [
-              { value: 484, name: "其他垃圾" },
-              { value: 1048, name: "可回收垃圾" },
-              { value: 580, name: "厨余垃圾" },
-              { value: 735, name: "有害垃圾" },
-            ],
+            data: [],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -241,12 +228,107 @@ export default {
       },
     };
   },
+  mounted() {
+    this.getOptions();
+  },
   methods: {
     selectArea(e) {
       console.log(e);
     },
     refresh() {
-      console.log("刷新");
+      this.handleChange();
+    },
+    async getOptions() {
+      await request({
+        methods: "get",
+        url: "/geography/all",
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.options = res.data.data.geoDates;
+      });
+    },
+    handleChange() {
+      this.allTrash.dataset.source = [
+        {
+          product: "1号垃圾桶",
+          可回收: 43.3,
+          有害垃圾: 85.8,
+          厨余垃圾: 93.7,
+          其他垃圾: 40,
+        },
+        {
+          product: "2号垃圾桶",
+          可回收: 83.1,
+          有害垃圾: 73.4,
+          厨余垃圾: 55.1,
+          其他垃圾: 40,
+        },
+        {
+          product: "3号垃圾桶",
+          可回收: 86.4,
+          有害垃圾: 65.2,
+          厨余垃圾: 82.5,
+          其他垃圾: 40,
+        },
+        {
+          product: "4号垃圾桶",
+          可回收: 72.4,
+          有害垃圾: 53.9,
+          厨余垃圾: 39.1,
+          其他垃圾: 40,
+        },
+        {
+          product: "5号垃圾桶",
+          可回收: 43.3,
+          有害垃圾: 85.8,
+          厨余垃圾: 93.7,
+          其他垃圾: 40,
+        },
+        {
+          product: "6号垃圾桶",
+          可回收: 83.1,
+          有害垃圾: 73.4,
+          厨余垃圾: 55.1,
+          其他垃圾: 40,
+        },
+        {
+          product: "7号垃圾桶",
+          可回收: 86.4,
+          有害垃圾: 65.2,
+          厨余垃圾: 82.5,
+          其他垃圾: 40,
+        },
+        {
+          product: "8号垃圾桶",
+          可回收: 72.4,
+          有害垃圾: 53.9,
+          厨余垃圾: 39.1,
+          其他垃圾: 40,
+        },
+        {
+          product: "9号垃圾桶",
+          可回收: 43.3,
+          有害垃圾: 85.8,
+          厨余垃圾: 93.7,
+          其他垃圾: 40,
+        },
+      ];
+      this.status.series[0].data = [
+        { value: 484, name: "故障" },
+        { value: 300, name: "正常" },
+      ];
+      this.useNum.series[0].data = [120, 200, 150, 80, 70, 110, 130, 120, 200];
+      this.trashData.series[0].data = [
+        { value: 484, name: "其他垃圾" },
+        { value: 1048, name: "可回收垃圾" },
+        { value: 580, name: "厨余垃圾" },
+        { value: 735, name: "有害垃圾" },
+      ];
+      this.$message.success("获取成功");
     },
   },
 };

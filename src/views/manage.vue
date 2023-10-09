@@ -54,11 +54,11 @@
             <i class="el-icon-shopping-cart-2"></i>
             <span slot="title">奖品统计</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item @click="handleClose(done)">
             <i class="el-icon-set-up"></i>
             <span slot="title">切换算法</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item @click="exit">
             <i class="el-icon-switch-button"></i>
             <span slot="title">登出</span>
           </el-menu-item>
@@ -73,6 +73,14 @@
 
 <script>
 export default {
+  beforeRouteEnter(to, from, next) {
+    let token = localStorage.getItem("token");
+    if (token === null || token === "") {
+      next("/login");
+    } else {
+      next();
+    }
+  },
   data() {
     return {
       routerPath: "/manage/data",
@@ -80,6 +88,20 @@ export default {
   },
   mounted() {
     this.routerPath = this.$route.path;
+  },
+  methods: {
+    exit() {
+      console.log("登出");
+      this.$router.replace("/login");
+      localStorage.clear();
+    },
+    handleClose(done) {
+      this.$confirm("是否要切换算法？")
+        .then(() => {
+          done();
+        })
+        .catch(() => {});
+    },
   },
 };
 </script>

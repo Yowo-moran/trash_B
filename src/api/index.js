@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-    // baseURL: 'http://api.yuleng.top:38090',
+    // baseURL: 'http://114.115.240.135:38091',
     timeout: 3000, // 毫秒
     headers: {
         'Content-Type': 'application/json',

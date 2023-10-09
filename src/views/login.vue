@@ -26,6 +26,7 @@
 </template>
   
 <script>
+import request from "@/api";
 export default {
   name: "login",
   data() {
@@ -37,30 +38,24 @@ export default {
     };
   },
   methods: {
-    loginUp(form) {
+    async loginUp(form) {
       // console.log(this.$router)
       console.log(form);
-      this.$axios({
+      await request({
         method: "post",
-        url: "http://82.157.249.75:6789/api/login",
+        url: "/user/b/login",
         data: {
           username: form.username,
           password: form.password,
         },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((responses) => {
-        console.log(responses.data);
-        if (responses.data.status !== "00000") {
-          this.$message.error(responses.data.message);
+      }).then((res) => {
+        if (res.data.status !== "00000") {
+          this.$message.error(res.data.message);
         } else {
-          this.$message.success(responses.data.message);
-          localStorage.setItem("token", responses.data.data.token);
+          this.$message.success(res.data.message);
+          localStorage.setItem("token", res.data.data.token);
           setTimeout(() => {
-            this.$router.replace({
-              name: "manage",
-            });
+            this.$router.replace("/manage");
           }, 700);
         }
       });

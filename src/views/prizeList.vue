@@ -114,7 +114,7 @@ export default {
         },
       ],
       currentPage: 1,
-      allPage: 100,
+      allPage: 12,
     };
   },
   mounted() {

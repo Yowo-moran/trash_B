@@ -6,14 +6,18 @@
       >
     </div>
     <el-table :data="tableData" border style="width: 100%; height: 88%">
-      <el-table-column label="ID" width="180" align="center">
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
+      <el-table-column
+        prop="createTime"
+        label="创建日期"
+        width="180"
+        align="center"
+      >
       </el-table-column>
-      <el-table-column prop="date" label="创建日期" width="380" align="center">
+      <el-table-column prop="content" label="名称" align="center">
       </el-table-column>
-      <el-table-column prop="address" label="地址" align="center">
+      <el-table-column prop="district" label="地址" align="center">
+      </el-table-column>
+      <el-table-column prop="location" label="详细地址" align="center">
       </el-table-column>
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
@@ -35,7 +39,6 @@
         layout="prev, pager, next"
         :page-size="12"
         :total="allPage"
-        @current-change="handleCurrentChange"
       >
       </el-pagination>
     </div>
@@ -52,8 +55,31 @@
           label-width="120px"
           label-position="left"
         >
-          <el-form-item label="垃圾桶地址" required>
-            <el-input v-model="addTrash.address"></el-input>
+          <el-form-item label="姓名" required>
+            <el-input v-model="addTrash.name"></el-input>
+          </el-form-item>
+          <el-form-item label="区域id" required>
+            <el-cascader
+              v-model="districtId"
+              :options="options"
+              @change="handleChange"
+              :props="{
+                expandTrigger: 'click',
+                value: 'id',
+                label: 'content',
+                multiple: false,
+                children: 'geoPoList',
+              }"
+            ></el-cascader>
+          </el-form-item>
+          <el-form-item label="位置信息名称" required>
+            <el-input v-model="addTrash.location"></el-input>
+          </el-form-item>
+          <el-form-item label="纬度" required>
+            <el-input v-model="addTrash.latitude"></el-input>
+          </el-form-item>
+          <el-form-item label="经度" required>
+            <el-input v-model="addTrash.longitude"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -75,8 +101,31 @@
           label-width="120px"
           label-position="left"
         >
-          <el-form-item label="垃圾桶地址" required>
-            <el-input v-model="editTransh.address"></el-input>
+          <el-form-item label="姓名" required>
+            <el-input v-model="editTransh.name"></el-input>
+          </el-form-item>
+          <el-form-item label="区域id" required>
+            <el-cascader
+              v-model="districtId"
+              :options="options"
+              @change="handleEdit"
+              :props="{
+                expandTrigger: 'click',
+                value: 'id',
+                label: 'content',
+                multiple: false,
+                children: 'geoPoList',
+              }"
+            ></el-cascader>
+          </el-form-item>
+          <el-form-item label="位置信息名称" required>
+            <el-input v-model="editTransh.location"></el-input>
+          </el-form-item>
+          <el-form-item label="纬度" required>
+            <el-input v-model="editTransh.latitude"></el-input>
+          </el-form-item>
+          <el-form-item label="经度" required>
+            <el-input v-model="editTransh.longitude"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -89,106 +138,153 @@
 </template>
 
 <script>
+import request from "@/api";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2023-08-29",
-          address: "天津理工大学12号教学楼前",
-        },
-        {
-          date: "2023-08-29",
-          address: "天津理工大学13号教学楼前",
-        },
-        {
-          date: "2023-08-30",
-          address: "天津理工大学机械学院正门前",
-        },
-        {
-          date: "2023-08-30",
-          address: "天津理工大学计算机学院正门前",
-        },
-        {
-          date: "2023-08-30",
-          address: "天津理工大学计算机学院侧门前",
-        },
-        {
-          date: "2023-08-30",
-          address: "天津理工大学28号A教学楼前",
-        },
-        {
-          date: "2023-08-31",
-          address: "天津理工大学28号B教学楼前",
-        },
-        {
-          date: "2023-09-01",
-          address: "天津理工大学图书馆前",
-        },
-        {
-          date: "2023-09-01",
-          address: "天津理工大学图书馆前",
-        },
-        {
-          date: "2023-09-03",
-          address: "天津理工大学二食堂前",
-        },
-        {
-          date: "2023-09-03",
-          address: "天津理工大学一食堂前",
-        },
-        {
-          date: "2023-09-03",
-          address: "天津理工大学一号体育场前",
-        },
-      ],
+      tableData: [],
+      districtId: "",
       addTrash: {
-        address: "",
+        name: "",
+        districtId: "",
+        location: "",
+        latitude: "",
+        longitude: "",
       },
+      options: [],
       addTrashDialog: false,
       editTransh: {
-        id: "",
-        address: "",
+        name: "",
+        districtId: "",
+        location: "",
+        latitude: "",
+        longitude: "",
       },
       editTrashDialog: false,
       currentPage: 1,
-      allPage: 100,
+      allPage: 12,
     };
   },
   mounted() {
     this.getTrashList();
+    this.getOptions();
   },
   methods: {
-    add() {
+    async add() {
       console.log("添加垃圾桶！");
-      this.addTrashDialog = false;
+      await request({
+        method: "post",
+        url: "/garbage/add",
+        data: this.addTrash,
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.addTrash = {
+          name: "",
+          districtId: "",
+          location: "",
+          latitude: "",
+          longitude: "",
+        };
+        this.districtId = "";
+        this.getTrashList();
+        this.addTrashDialog = false;
+      });
     },
     trashAddClose() {
       this.addTrash.address = "";
       this.addTrashDialog = false;
     },
-    edit() {
+    async edit() {
       console.log("修改垃圾桶！");
-      this.editTrashDialog = false;
+      await request({
+        method: "post",
+        url: "/garbage/edit",
+        data: this.editTransh,
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.getTrashList();
+        this.editTrashDialog = false;
+      });
     },
     trashEdit(index) {
-      this.editTransh.id = index;
-      this.editTransh.address = this.tableData[index].address;
+      this.editTransh.id = this.tableData[index].id;
+      this.editTransh.name = this.tableData[index].content;
+      this.editTransh.location = this.tableData[index].location;
+      this.editTransh.latitude = this.tableData[index].latitude;
+      this.editTransh.longitude = this.tableData[index].longitude;
       this.editTrashDialog = true;
       console.log(index);
     },
     trashEditClose() {
       this.editTrashDialog = false;
     },
-    trashDetele(index) {
+    async trashDetele(index) {
+      await request({
+        method: "post",
+        url: "/garbage/delete",
+        params: {
+          garbageId: this.tableData[index].id,
+        },
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.getTrashList();
+      });
       console.log("删除垃圾桶！", index);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
       console.log(`当前页: ${val}`);
     },
-    getTrashList() {
+    async getTrashList() {
       console.log("获取！");
+      await request({
+        method: "get",
+        url: "/garbage/all",
+        params: {
+          type: "3",
+          id: "1",
+        },
+      }).then((res) => {
+        console.log(111, res);
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.tableData = res.data.data.garbageList;
+      });
+    },
+    async getOptions() {
+      await request({
+        method: "get",
+        url: "/geography/all",
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.options = res.data.data.geoDates;
+        console.log(res.data);
+      });
+    },
+    handleChange(value) {
+      this.addTrash.districtId = value[2];
+    },
+    handleEdit(value) {
+      this.editTransh.districtId = value[2];
     },
   },
 };
