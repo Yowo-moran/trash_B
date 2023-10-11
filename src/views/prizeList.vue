@@ -4,9 +4,9 @@
     <el-table :data="tableData" border style="width: 100%; height: 88%">
       <el-table-column prop="date" label="日期" width="180" align="center">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180" align="center">
+      <el-table-column prop="user" label="姓名" width="180" align="center">
       </el-table-column>
-      <el-table-column prop="prize" label="奖品" width="200" align="center">
+      <el-table-column prop="gift" label="奖品" width="200" align="center">
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="200" align="center">
       </el-table-column>
@@ -34,84 +34,85 @@
 </template>
 
 <script>
+import request from "@/api";
 export default {
   data() {
     return {
       tableData: [
-        {
-          date: "2023-09-07",
-          name: "唐子涵",
-          phone: "13116149651",
-          address: "天津天津市西青区李七庄街宾水西道391号天津理工大学北区",
-          prize: "头戴式耳机",
-        },
-        {
-          date: "2023-09-08",
-          name: "路小雨",
-          phone: "15606149231",
-          address:
-            "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
-          prize: "保温水杯",
-        },
-        {
-          date: "2023-09-08",
-          name: "萧淡",
-          phone: "13314238141",
-          address: "天津天津市西青区李七庄街宾水西道391号天津理工大学南区",
-          prize: "头戴式耳机",
-        },
-        {
-          date: "2023-09-08",
-          name: "路明非",
-          phone: "13312322141",
-          address:
-            "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
-          prize: "碳素签字笔",
-        },
-        {
-          date: "2023-09-09",
-          name: "齐睿芮",
-          phone: "15232322141",
-          address: "天津天津市西青区李七庄街宾水西道391号天津理工大学南区",
-          prize: "头戴式耳机",
-        },
-        {
-          date: "2023-09-09",
-          name: "凌波丽",
-          phone: "15602109177",
-          address:
-            "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
-          prize: "碳素签字笔",
-        },
-        {
-          date: "2023-09-12",
-          name: "潇宇浩",
-          phone: "15602229177",
-          address: "天津天津市西青区李七庄街宾水西道391号天津理工大学南区",
-          prize: "保温水杯",
-        },
-        {
-          date: "2023-09-14",
-          name: "张思俊",
-          phone: "13116149652",
-          address:
-            "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
-          prize: "碳素签字笔",
-        },
-        {
-          date: "2023-09-14",
-          name: "张昭慧",
-          phone: "15602113247",
-          address: "天津天津市西青区李七庄街宾水西道391号天津理工大学北区",
-          prize: "毛绒玩具",
-        },
-        {
-          date: "2023-09-18",
-          name: "苏明皓",
-          phone: "15610294247",
-          address: "天津天津市西青区李七庄街宾水西道391号天津理工大学北区",
-          prize: "碳素签字笔",
-        },
+        // {
+        //   date: "2023-09-07",
+        //   name: "唐子涵",
+        //   phone: "13116149651",
+        //   address: "天津天津市西青区李七庄街宾水西道391号天津理工大学北区",
+        //   prize: "头戴式耳机",
+        // },
+        // {
+        //   date: "2023-09-08",
+        //   name: "路小雨",
+        //   phone: "15606149231",
+        //   address:
+        //     "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
+        //   prize: "保温水杯",
+        // },
+        // {
+        //   date: "2023-09-08",
+        //   name: "萧淡",
+        //   phone: "13314238141",
+        //   address: "天津天津市西青区李七庄街宾水西道391号天津理工大学南区",
+        //   prize: "头戴式耳机",
+        // },
+        // {
+        //   date: "2023-09-08",
+        //   name: "路明非",
+        //   phone: "13312322141",
+        //   address:
+        //     "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
+        //   prize: "碳素签字笔",
+        // },
+        // {
+        //   date: "2023-09-09",
+        //   name: "齐睿芮",
+        //   phone: "15232322141",
+        //   address: "天津天津市西青区李七庄街宾水西道391号天津理工大学南区",
+        //   prize: "头戴式耳机",
+        // },
+        // {
+        //   date: "2023-09-09",
+        //   name: "凌波丽",
+        //   phone: "15602109177",
+        //   address:
+        //     "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
+        //   prize: "碳素签字笔",
+        // },
+        // {
+        //   date: "2023-09-12",
+        //   name: "潇宇浩",
+        //   phone: "15602229177",
+        //   address: "天津天津市西青区李七庄街宾水西道391号天津理工大学南区",
+        //   prize: "保温水杯",
+        // },
+        // {
+        //   date: "2023-09-14",
+        //   name: "张思俊",
+        //   phone: "13116149652",
+        //   address:
+        //     "天津天津市西青区精武镇详细地址宾水西道延长线399号天津市大学软件学院公寓",
+        //   prize: "碳素签字笔",
+        // },
+        // {
+        //   date: "2023-09-14",
+        //   name: "张昭慧",
+        //   phone: "15602113247",
+        //   address: "天津天津市西青区李七庄街宾水西道391号天津理工大学北区",
+        //   prize: "毛绒玩具",
+        // },
+        // {
+        //   date: "2023-09-18",
+        //   name: "苏明皓",
+        //   phone: "15610294247",
+        //   address: "天津天津市西青区李七庄街宾水西道391号天津理工大学北区",
+        //   prize: "碳素签字笔",
+        // },
       ],
       currentPage: 1,
       allPage: 12,
@@ -121,15 +122,37 @@ export default {
     this.getPrizeList();
   },
   methods: {
-    over(index) {
+    async over(index) {
+      await request({
+        method: "post",
+        url: "/shop/finish",
+        data: {
+          orderId: this.tableData[index].id,
+        },
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+      });
       console.log("完成！", index);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      console.log(`当前页: ${val}`);
     },
-    getPrizeList() {
-      console.log("获取！");
+    async getPrizeList() {
+      await request({
+        method: "get",
+        url: "/shop/orders",
+      }).then((res) => {
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        this.tableData = res.data.data.orders;
+      });
     },
   },
 };

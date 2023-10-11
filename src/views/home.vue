@@ -23,7 +23,7 @@
           @click="change(item.position)"
         >
           <div class="trash1" v-show="item.state === 0">
-            <div class="num">{{ index + 1 }}号垃圾桶</div>
+            <div class="num">{{ item.label.content }}</div>
             <div class="img">
               <img
                 src="../img/垃圾桶 (1).png"
@@ -40,7 +40,7 @@
             <div class="status">状态:未满</div>
           </div>
           <div class="trash2" v-show="item.state === 1">
-            <div class="num">{{ index + 1 }}号垃圾桶</div>
+            <div class="num">{{ item.label.content }}</div>
             <div class="img">
               <img
                 src="../img/垃圾桶 (2).png"
@@ -57,7 +57,7 @@
             <div class="status">状态:烟雾警报</div>
           </div>
           <div class="trash3" v-show="item.state === 2">
-            <div class="num">{{ index + 1 }}号垃圾桶</div>
+            <div class="num">{{ item.label.content }}</div>
             <div class="img">
               <img
                 src="../img/垃圾桶 (3).png"
@@ -80,42 +80,52 @@
 </template>
 
 <script>
+import request from "@/api";
 export default {
   components: {},
   props: {},
   data() {
     return {
       center: [117.14093, 39.061554],
-      markers: [
-        {
-          position: [117.14093, 39.061554],
-          label: { content: "1号垃圾桶", offset: [-20, -30] },
-          state: 1,
-        },
-        {
-          position: [117.14387, 39.063836],
-          label: { content: "2号垃圾桶", offset: [-20, -30] },
-          state: 2,
-        },
-        {
-          position: [117.144084, 39.056705],
-          label: { content: "3号垃圾桶", offset: [-20, -30] },
-          state: 0,
-        },
-      ],
+      markers: [],
     };
   },
   watch: {},
   computed: {},
+  mounted() {
+    this.getTrashLocation();
+  },
   methods: {
-    getTrashLocation() {},
+    async getTrashLocation() {
+      await request({
+        method: "get",
+        url: "/garbage/all",
+        params: {
+          type: 3,
+          id: 1,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.data.code !== "00000") {
+          this.$message.error(res.data.message);
+          return;
+        }
+        this.$message.success(res.data.message);
+        res.data.data.garbageList.map((item) => {
+          this.markers.push({
+            position: [item.longitude, item.latitude],
+            label: { content: item.content, offset: [-20, -30] },
+            state: item.status,
+          });
+        });
+      });
+    },
     change(val) {
       this.center = val;
       console.log(this.center);
     },
   },
   created() {},
-  mounted() {},
 };
 </script>
 <style lang="less" scoped>
