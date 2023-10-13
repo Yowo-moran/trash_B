@@ -178,11 +178,9 @@ export default {
   },
   mounted() {
     this.getOptions();
+    this.handleChange();
   },
   methods: {
-    selectArea(e) {
-      console.log(e);
-    },
     refresh() {
       this.handleChange();
     },
@@ -203,36 +201,36 @@ export default {
       this.allTrash.dataset.source = [
         {
           product: "唐子涵牌垃圾桶",
-          可回收: 43.3,
-          有害垃圾: 85.8,
-          厨余垃圾: 93.7,
-          其他垃圾: 40,
+          可回收: 13,
+          有害垃圾: 7,
+          厨余垃圾: 20,
+          其他垃圾: 30,
         },
         {
           product: "路小雨牌垃圾桶",
-          可回收: 83.1,
-          有害垃圾: 73.4,
-          厨余垃圾: 55.1,
-          其他垃圾: 40,
+          可回收: 23,
+          有害垃圾: 14,
+          厨余垃圾: 8,
+          其他垃圾: 15,
         },
         {
           product: "消炎牌垃圾桶",
-          可回收: 86.4,
-          有害垃圾: 65.2,
-          厨余垃圾: 82.5,
-          其他垃圾: 40,
+          可回收: 30,
+          有害垃圾: 4,
+          厨余垃圾: 15,
+          其他垃圾: 24,
         },
       ];
       this.status.series[0].data = [
-        { value: 484, name: "故障" },
-        { value: 300, name: "正常" },
+        { value: 0, name: "故障" },
+        { value: 3, name: "正常" },
       ];
-      this.useNum.series[0].data = [120, 200, 150];
+      this.useNum.series[0].data = [70, 60, 73];
       this.trashData.series[0].data = [
-        { value: 484, name: "其他垃圾" },
-        { value: 1048, name: "可回收垃圾" },
-        { value: 580, name: "厨余垃圾" },
-        { value: 735, name: "有害垃圾" },
+        { value: 69, name: "其他垃圾" },
+        { value: 66, name: "可回收垃圾" },
+        { value: 43, name: "厨余垃圾" },
+        { value: 25, name: "有害垃圾" },
       ];
       this.$message.success("获取成功");
     },

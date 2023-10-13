@@ -39,8 +39,6 @@ export default {
   },
   methods: {
     async loginUp(form) {
-      // console.log(this.$router)
-      console.log(form);
       await request({
         method: "post",
         url: "/user/b/login",
@@ -49,15 +47,15 @@ export default {
           password: form.password,
         },
       }).then((res) => {
-        if (res.data.status !== "00000") {
+        if (res.data.code !== "00000") {
           this.$message.error(res.data.message);
-        } else {
-          this.$message.success(res.data.message);
-          localStorage.setItem("token", res.data.data.token);
-          setTimeout(() => {
-            this.$router.replace("/manage");
-          }, 700);
+          return;
         }
+        this.$message.success(res.data.message);
+        localStorage.setItem("token", res.data.data.token);
+        setTimeout(() => {
+          this.$router.replace("/manage");
+        }, 700);
       });
     },
   },
