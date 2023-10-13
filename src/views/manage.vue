@@ -98,6 +98,9 @@ export default {
     handleClose(done) {
       this.$confirm("是否要切换算法？")
         .then(() => {
+          setTimeout(() => {
+            this.$message.success("算法切换成功");
+          }, 700);
           done();
         })
         .catch(() => {});

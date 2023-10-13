@@ -178,7 +178,6 @@ export default {
   },
   mounted() {
     this.getOptions();
-    this.handleChange();
   },
   methods: {
     refresh() {
